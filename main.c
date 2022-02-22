@@ -3,10 +3,17 @@
 #include <assert.h>
 #include <stdbool.h>
 
-void repr_bytes_to_hex(char *array, int size){
+void repr_bytes_to_hex_and_ascii(char *array, int size){
 	for(int i = 0; i < size; i++)
 		printf("%02X ", array[i]);
-	putc('\n', stdout);
+	putchar('|');
+	for(int i = 0; i < size; i++){
+		if(array[i] >= ' ' && array[i] <= '~')
+			putchar(array[i]);
+		else
+			putchar('.');
+	}
+	printf("|\n");
 }
 int main(int argc, char **argv){
 	if(argc != 2){
@@ -32,7 +39,7 @@ int main(int argc, char **argv){
 		}
 
 		if(x > (len - 1)){
-			repr_bytes_to_hex(c_array, sizeof(c_array));
+			repr_bytes_to_hex_and_ascii(c_array, sizeof(c_array));
 			x = 0;
 		}
 
@@ -40,7 +47,7 @@ int main(int argc, char **argv){
 		x++;
 	}
 
-	repr_bytes_to_hex(c_array, x);
+	repr_bytes_to_hex_and_ascii(c_array, x);
 
 	fclose(input_file);
 
